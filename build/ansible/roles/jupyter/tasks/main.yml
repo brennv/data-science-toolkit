@@ -1,9 +1,13 @@
 ---
-- name: 'install pip'
-  sudo: yes
+- name: install python setup tools (easy_install)
   apt:
-    pkg: python-pip
+    pkg: python-setuptools
     state: present
+
+- name: install pip
+  sudo: yes
+  easy_install:
+    name: pip
 
 - include: analysis-deps.yml
 
