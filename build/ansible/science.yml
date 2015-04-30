@@ -1,0 +1,8 @@
+---
+- name: bootstrap oss-dst host
+  hosts: all
+  sudo: yes
+  vars:
+    ipython_user: deploy
+    ipython_notebook_dir: /home/{{ipython_user}}/notebooks
+  roles: [ "jupyter" ]

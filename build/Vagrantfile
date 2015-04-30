@@ -1,0 +1,50 @@
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "trusty64"
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 4096
+    v.cpus = 2
+    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+
+  unless Vagrant.has_plugin?('vagrant-s3auth')
+    system('vagrant plugin install vagrant-s3auth') || exit!
+    exit system('vagrant', *ARGV)
+  end
+
+  unless Vagrant.has_plugin?('vagrant-hostsupdater')
+    system('vagrant plugin install vagrant-hostsupdater') || exit!
+    exit system('vagrant', *ARGV)
+  end
+
+  config.hostsupdater.remove_on_suspend = false
+
+  unless Vagrant.has_plugin?('vagrant-cachier')
+    system('vagrant plugin install vagrant-cachier') || exit!
+    exit system('vagrant', *ARGV)
+  end
+  config.cache.scope = :machine
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/bootstrap.yml"
+    ansible.inventory_path = "ansible/inv"
+    ansible.verbose = "vvvv"
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "ansible/science.yml"
+    ansible.inventory_path = "ansible/inv"
+    ansible.raw_arguments = ["-u", "deploy"]
+  end
+
+
+  config.vm.define "data-science-toolkit-build" do |node|
+      node.vm.network "private_network", ip: "192.168.32.3"
+      node.vm.hostname = "dstk-build.dev"
+  end
+
+end

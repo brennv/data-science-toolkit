@@ -1,0 +1,7 @@
+---
+- name: provision oss-dst host
+  hosts: all
+  sudo: yes
+  vars:
+    common_user: deploy
+  roles: [ "common" ]
