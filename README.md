@@ -20,16 +20,4 @@ vagrant suspend
 
 # development
 
-prereqs:
-- ansible
-
-```
-cd cd data-science-toolkit/build
-vagrant up
-```
-
-### packaging
-
-```
-vagrant package
-```
+see: build/README.md
