@@ -45,4 +45,4 @@
 - include: nbextensions.yml
 
 - name: Start application
-  service: name=ipython-notebook state=restarted
+  service: name=ipython-notebook state=started
