@@ -44,6 +44,9 @@
     - matplotlib-venn
     - scikit-learn
     - ua_parser
+    - osmapi
+    - overpass
+
 - name: install latest pip deps
   pip:
     name: "{{item}}"
