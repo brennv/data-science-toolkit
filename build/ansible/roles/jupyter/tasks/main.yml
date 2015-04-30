@@ -42,5 +42,7 @@
     dest: /etc/init/ipython-notebook.conf
   notify: restart ipython-notebook
 
+- include: nbextensions.yml
+
 - name: Start application
   service: name=ipython-notebook state=restarted

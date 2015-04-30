@@ -1,0 +1,57 @@
+---
+- name: get nbextension zip
+  get_url:
+    url: "{{item.url}}"
+    dest: "/tmp/{{item.name}}.zip"
+  with_items: nbextension_zips
+
+- name: create ipython directories
+  file:
+    state: directory
+    recurse: yes
+    dest: "/home/{{ipython_user}}/.ipython/{{item}}"
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+  with_items:
+    - nbextensions
+    - profile_default/static/custom
+    - nbextensions/usability
+
+- name: expand nbextension zip
+  unarchive:
+    copy: no
+    creates: /home/{{ipython_user}}/.ipython/nbextensions/{{item.name}}.js
+    src: /tmp/{{item.name}}.zip
+    dest: /home/{{ipython_user}}/.ipython/nbextensions
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+  with_items: nbextension_zips
+
+- name: get ipython-contrib nbextensions
+  get_url:
+    url: https://github.com/ipython-contrib/IPython-notebook-extensions/archive/3.x.zip
+    dest: /tmp/contrib_ext.zip
+
+- name: expand ipython-contrib nbextensions
+  unarchive:
+    copy: no
+    src: /tmp/contrib_ext.zip
+    dest: /home/{{ipython_user}}/
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+
+- name: link ipython-contrib nbextensions
+  file:
+    state: link
+    src: /home/{{ipython_user}}/IPython-notebook-extensions-3.x/{{item | dirname}}/
+    dest: /home/{{ipython_user}}/.ipython/nbextensions/{{item | dirname}}
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+  with_items: ipython_contrib_extensions
+
+- name: install custom.js to load nbextensions
+  template:
+    src: custom.js.j2
+    dest: "/home/{{ipython_user}}/.ipython/profile_default/static/custom/custom.js"
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"

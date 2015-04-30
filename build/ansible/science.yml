@@ -5,4 +5,9 @@
   vars:
     ipython_user: deploy
     ipython_notebook_dir: /home/{{ipython_user}}/notebooks
+  pre_tasks:
+    - name: install unzip
+      apt:
+        state: present
+        pkg: unzip
   roles: [ "jupyter" ]

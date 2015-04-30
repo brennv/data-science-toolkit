@@ -1,0 +1,10 @@
+nbextension_zips:
+  - name: calico-spell-check
+    url: "https://bitbucket.org/ipre/calico/downloads/calico-spell-check-1.0.zip"
+  - name: calico-document-tools
+    url: "https://bitbucket.org/ipre/calico/downloads/calico-document-tools-1.0.zip"
+
+ipython_contrib_extensions:
+  - usability/python-markdown/main
+  - usability/codefolding/main
+  - usability/execute_time/ExecuteTime

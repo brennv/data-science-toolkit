@@ -1,0 +1,14 @@
+// {{ansible_managed}}
+
+require(['base/js/events'], function(events) {
+  events.on('app_initialized.NotebookApp', function(){
+
+    {% for ext in ipython_contrib_extensions %}
+      IPython.load_extensions("{{ext}}");
+    {% endfor %}
+
+    {% for zip in nbextension_zips %}
+      IPython.load_extensions("{{zip.name}}");
+    {% endfor %}
+  });
+});
