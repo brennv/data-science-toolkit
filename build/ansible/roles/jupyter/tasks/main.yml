@@ -1,0 +1,42 @@
+---
+- name: 'install pip'
+  sudo: yes
+  apt:
+    pkg: python-pip
+    state: present
+
+- include: analysis-deps.yml
+
+- name: create notebooks directory
+  file:
+    state: directory
+    dest: "{{ipython_notebook_dir}}"
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+
+- name: create default notebook profile
+  sudo: yes
+  file:
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+    state: directory
+    recurse: yes
+    dest: /home/{{ipython_user}}/.ipython/profile_default
+
+- name: configure default notebook
+  sudo: yes
+  template:
+    owner: "{{ipython_user}}"
+    group: "{{ipython_user}}"
+    src: ipynb_conf.py.j2
+    dest: /home/{{ipython_user}}/.ipython/profile_default/ipython_notebook_config.py
+  notify: restart ipython-notebook
+
+- name: Configure upstart script
+  template:
+    src: upstart.conf.j2
+    dest: /etc/init/ipython-notebook.conf
+  notify: restart ipython-notebook
+
+- name: Start application
+  service: name=ipython-notebook state=restarted

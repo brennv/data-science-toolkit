@@ -1,0 +1,52 @@
+---
+- name: install apt deps
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - python-dev
+    - libreadline-dev
+    - pandoc
+    - python-psycopg2
+    - python-pandas
+    - python-mpltoolkits.basemap
+    - libsqlite3-dev
+    - libproj-dev
+    - libgdal-dev
+    - gfortran
+    - libxml2-dev
+    - libxslt1-dev
+
+- name: install pip ipython and deps
+  pip:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - ipython
+    - pyzmq
+    - jinja2
+    - tornado
+    - pygments
+    - jsonschema
+    - mpld3
+    - seaborn
+    - nltk
+    - pyzipcode
+    - census
+    - fiona
+    - descartes
+    - networkx
+    - pymc
+    - gensim
+    - lifelines
+    - YURL
+    - lxml
+    - matplotlib-venn
+    - scikit-learn
+    - ua_parser
+- name: install latest pip deps
+  pip:
+    name: "{{item}}"
+    state: latest
+  with_items:
+    - pandas

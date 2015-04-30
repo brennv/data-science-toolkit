@@ -1,0 +1,2 @@
+- name: restart ipython-notebook
+  service: name=ipython-notebook state=restarted
