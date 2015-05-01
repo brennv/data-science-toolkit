@@ -21,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     exit system('vagrant', *ARGV)
   end
 
-  config.hostsupdater.remove_on_suspend = false
+  config.hostsupdater.remove_on_suspend = true
 
   unless Vagrant.has_plugin?('vagrant-cachier')
     system('vagrant plugin install vagrant-cachier') || exit!

@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     exit system('vagrant', *ARGV)
   end
 
-  config.hostsupdater.remove_on_suspend = false
+  config.hostsupdater.remove_on_suspend = true
 
   config.vm.define "oss-data-science-toolkit" do |node|
       node.vm.network "private_network", ip: "192.168.32.4"
